@@ -43,7 +43,7 @@
 #include <linux/dvb/frontend.h>
 #include <linux/dvb/version.h>
 
-#if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 10
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 10))
 #include <errno.h>
 #endif
 
@@ -276,7 +276,7 @@ void CFrontend::getFEInfo(void)
 	}
 #endif // HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE
 
-#if (DVB_API_VERSION >= 5) && (DVB_API_VERSION_MINOR >= 5)
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 5))
 	dtv_property prop[1];
 	dtv_properties cmdseq;
 
@@ -355,7 +355,7 @@ void CFrontend::getFEInfo(void)
 			break;
 		case FE_OFDM:
 			deliverySystemMask |= DVB_T;
-#if (DVB_API_VERSION >= 5) && (DVB_API_VERSION_MINOR >= 3)
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 3))
 			if (info.caps & FE_CAN_2G_MODULATION)
 				deliverySystemMask |= DVB_T2;
 #endif
@@ -650,7 +650,7 @@ fe_bandwidth_t CFrontend::getBandwidth(const uint8_t bandwidth)
 		return BANDWIDTH_7_MHZ;
 	case 0x02:
 		return BANDWIDTH_6_MHZ;
-#if (DVB_API_VERSION >= 5 && DVB_API_VERSION_MINOR >= 3)
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 3))
 	case 0x03:
 		return BANDWIDTH_5_MHZ;
 #endif
@@ -771,7 +771,7 @@ uint16_t CFrontend::getSignalStrength(void) const
 {
 	uint16_t strength = 0;
 
-#if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 10
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 10))
 	dtv_property prop[1];
 	memset(prop, 0, sizeof(prop));
 	prop[0].cmd = DTV_STAT_SIGNAL_STRENGTH;
@@ -836,7 +836,7 @@ uint16_t CFrontend::getSignalNoiseRatio(void) const
 		max_value = 5000; //2900;
 #endif
 
-#if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 10
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 10))
 	dtv_property prop[1];
 	prop[0].cmd = DTV_STAT_CNR;
 	dtv_properties props;
@@ -1350,7 +1350,7 @@ fe_delivery_system_t CFrontend::getFEDeliverySystem(delivery_system_t Delsys)
 	case DVB_T:
 		delsys = SYS_DVBT;
 		break;
-#if (DVB_API_VERSION >= 5) && (DVB_API_VERSION_MINOR >= 3)
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 3))
 	case DVB_T2:
 		delsys = SYS_DVBT2;
 		break;
@@ -1463,7 +1463,7 @@ uint32_t CFrontend::getFEBandwidth(fe_bandwidth_t bandwidth)
 	case BANDWIDTH_6_MHZ:
 		bandwidth_hz  = 6000000;
 		break;
-#if (DVB_API_VERSION >= 5 && DVB_API_VERSION_MINOR >= 3)
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 3))
 	case BANDWIDTH_5_MHZ:
 		bandwidth_hz  = 5000000;
 		break;
@@ -1652,7 +1652,7 @@ int CFrontend::setFrontend(const FrontendParameters *feparams, bool nowait)
 			p[cmdseq.num].cmd = DTV_PILOT,			p[cmdseq.num].u.data = pilot,									cmdseq.num++;
 			if (fe_can_multistream)
 			{
-#if (DVB_API_VERSION >= 5 && DVB_API_VERSION_MINOR >= 11)
+#if ((DVB_API_VERSION > 5) || (DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 11))
 				p[cmdseq.num].cmd = DTV_STREAM_ID, p[cmdseq.num].u.data = feparams->plp_id,							cmdseq.num++;
 				p[cmdseq.num].cmd = DTV_SCRAMBLING_SEQUENCE_INDEX, p[cmdseq.num].u.data = feparams->pls_code,		cmdseq.num++;
 #else
