@@ -179,8 +179,8 @@ int CLCD4lSetup::show()
 			break;
 #endif
 		case 1: // Samsung
-			enable_brightness = false;
-			max_brightness = 0;
+			enable_brightness = true;
+			max_brightness = 10;
 			break;
 		case 0: // Pearl
 		default:
